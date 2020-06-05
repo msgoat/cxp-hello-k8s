@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: cxp-hello-k8s
+  labels:
+    app.kubernetes.io/name: cxp-hello-k8s
+    app.kubernetes.io/instance: cxp-hello-k8s
+    app.kubernetes.io/version: "${project.version}"
+    app.kubernetes.io/component: network
+    app.kubernetes.io/part-of: cxp
+    app.kubernetes.io/managed-by: kubectl
+  annotations:
+    traefik.frontend.rule.type: PathPrefixStrip
+spec:
+  rules:
+    - host: "apps.cxp.k8s.aws.msgoat.eu"
+      http:
+        paths:
+          - path: ${k8s.ingress.path}
+            backend:
+              serviceName: cxp-hello-k8s
+              servicePort: http
